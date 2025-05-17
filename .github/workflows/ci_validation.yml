@@ -1,0 +1,24 @@
+name: CI script validation tests
+
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/**'
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  ci-script-tests:
+    name: Run ci script tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Run Bats test file
+        run: |
+          bats .github/scripts/*_test.bats

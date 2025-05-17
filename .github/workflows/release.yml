@@ -1,0 +1,54 @@
+name: Release gem
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Version from File
+        id: version
+        run: |
+          version=$(.github/scripts/get_version.sh)
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "Found release version: $version"
+
+      - name: Check release and draft release versions match
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          release_tag="${{ github.event.release.tag_name }}"
+          echo "GitHub tag: $release_tag"
+          echo "Expected version: $version"
+
+          if [ "$version" = "$release_tag" ]; then
+            echo "Release tag and version match"
+          else
+            echo "Release tag and version do not match"
+            exit 1
+          fi
+          
+      - name: Release summary
+        run: |
+          tag="${{ github.event.release.tag_name }}"
+          {
+            echo "### Release: \`$tag\`"
+            echo ""
+            echo "${{ github.event.release.body }}"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Do release
+        run: |
+          {
+            echo "### Release Log"
+            echo '```'
+            .github/scripts/release.sh
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}

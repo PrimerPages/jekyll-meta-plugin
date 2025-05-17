@@ -1,0 +1,75 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "bundle exec rspec",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "lint",
+            "type": "shell",
+            "command": "bundle exec rubocop",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "format",
+            "type": "shell",
+            "command": "bundle exec rubocop -A",
+            "problemMatcher": []
+        },
+        {
+            "label": "bundle install",
+            "type": "shell",
+            "command": "bundle install",
+            "problemMatcher": []
+        },
+        {
+            "label": "ci validation",
+            "type": "shell",
+            "command": "bats .github/scripts/",
+            "group": {
+                "kind": "test"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "release (dry-run)",
+            "type": "shell",
+            "command": ".github/scripts/release.sh",
+            "options": {
+                "env": {
+                    "DRY_RUN": "true",
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "release",
+            "type": "shell",
+            "command": ".github/scripts/release.sh",
+            "problemMatcher": []
+        },
+        {
+            "label": "jekyll: build",
+            "type": "shell",
+            "command": "bundle exec jekyll build",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "jekyll: serve",
+            "type": "shell",
+            "command": "bundle exec jekyll serve",
+            "problemMatcher": []
+        },
+    ]
+}

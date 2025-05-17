@@ -1,123 +1,102 @@
-# Jekyll Project Template
+# jekyll-meta
 
-*A modern GitHub template repository for building Jekyll plugins and sites with best practices.*
+[![RubyGem Version](https://badge.fury.io/rb/jekyll-meta.svg)](https://badge.fury.io/rb/jekyll-meta)
+[![Build Status](https://github.com/PrimerPages/jekyll-meta/actions/workflows/ci.yml/badge.svg)](https://github.com/PrimerPages/jekyll-meta/actions)
 
-This template provides a pre-configured development environment for working on [Jekyll](https://jekyllrb.com) plugins or projects. It includes:
+A lightweight Jekyll plugin that injects useful build-time metadata (Jekyll version, environment, Ruby version, etc.) into Liquid templates.
 
-- GitHub Actions for Ruby and Jekyll CI matrix
-- DevContainer for reproducible development
-- VS Code tasks for common workflows
-- Bundler and RSpec setup
-- Automated version bump + release script
+## Features
 
-## 🚀 Getting Started
+* **Jekyll Version**: `site.meta.jekyll_version`
+* **Major Version**: `site.meta.jekyll_major_version` (integer)
+* **Environment**: `site.meta.environment` (e.g., `development`, `production`)
+* **Ruby Version**: `site.meta.ruby_version`
 
-### Use This Template
+## Installation
 
-Click **"Use this template"** on GitHub to create your own repository based on this setup.
+1. **Add to your Gemfile**:
 
-Then:
+   ```ruby
+   group :jekyll_plugins do
+     gem "jekyll-meta"
+   end
+   ```
 
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO
-cd YOUR_REPO
+2. **Bundle install**:
+
+   ```sh
+   bundle install
+   ```
+
+3. **Enable the plugin** in your `_config.yml`:
+
+   ```yaml
+   plugins:
+     - jekyll-meta
+   ```
+
+4. **Rebuild your site**:
+
+   ```sh
+   bundle exec jekyll build
+   ```
+
+## Usage
+
+Use the following Liquid variables anywhere in your templates, pages, or posts:
+
+```liquid
+Jekyll version: {{ site.meta.jekyll_version }}
+Major version: {{ site.meta.jekyll_major_version }}
+Environment: {{ site.meta.environment }}
+Ruby version: {{ site.meta.ruby_version }}
 ```
 
-### Required Secrets
+### Example
 
-To enable automated releases, set the following repository secrets:
-
-`PR_TOKEN`: a personal access token with repo and workflow scopes (used to create/update draft PRs)
-
-`RUBYGEMS_API_KEY`: your RubyGems API key (used to publish releases)
-
----
-
-## Repository setup
-
-Additional repository options:
-
-`General->Pull Requests`
-
-- Always suggest updating pull request branches (optional)
-- Allow auto-merge (required)
-- Automatically delete head branches (optional)
-
-`Rules->Rulesets`
-
-- Ruleset name: `main`
-- Enforcement status: `active`
-- Targets: `Include default branch`
-  - Require linear history (optional)
-  - Require status checks to pass
-    - Add Check: Check required tests passed
-  - Block force pushes
-
-`Actions->General`
-
-- Allow GitHub Actions to create and approve pull requests (required)
-
-`Pages`
-
-- Deploy from a branch
-- Branch: `main` `/root`
-
-## Development Environment
-
-### VS Code + DevContainer
-
-If you use VS Code and have the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers):
-
-1. Open the project in VS Code.
-2. You'll be prompted to "Reopen in Container".
-3. Everything (Ruby, Bundler, Jekyll) is preinstalled and ready to go.
-
-## Testing
-
-Run tests with:
-
-```bash
-bundle exec rspec          # Ruby tests
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ site.title }}</title>
+</head>
+<body>
+  <footer>
+    <p>Built with Jekyll v{{ site.meta.jekyll_version }} (v{{ site.meta.jekyll_major_version }})</p>
+    <p>Environment: {{ site.meta.environment }}</p>
+    <p>Ruby: {{ site.meta.ruby_version }}</p>
+  </footer>
+</body>
+</html>
 ```
 
-Or use VS Code tasks:
+## Configuration
 
-- `Ctrl+Shift+P` → **Tasks: Run Task** → choose:
-  - `test`
-  - `lint`
-  - `format`
+No additional configuration is required. The plugin works out of the box once enabled.
 
-CI will matrix test across Ruby and Jekyll versions via GitHub Actions.
+## Compatibility
 
-## Release Workflow
+* **Jekyll**: `>= 3.0`, `< 5.0`
+* **Ruby**: `>= 2.7`
 
-Use the included `release.sh` script:
+## Contributing
 
-```bash
-./release.sh --dry-run    # Simulate release
-./release.sh              # Build and push gem to RubyGems
-```
+Contributions, issues, and feature requests are welcome!
 
-CI will:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a pull request
 
-- Bump the version
-- Create/update a draft PR (release/draft)
-- Tag and publish on merge to main
-
-## Dependency Management
-
-Dependencies are managed with Bundler:
-
-```bash
-bundle install
-```
-
-Dependabot is configured to automatically update:
-
-- Ruby gems (`Gemfile`)
-- GitHub Actions
-- DevContainer metadata
+Please ensure all tests pass and follow the existing code style.
 
 ## License
 
-MIT
+Licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Links
+
+* **Homepage:** [https://github.com/PrimerPages/jekyll-meta](https://github.com/PrimerPages/jekyll-meta)
+* **RubyGems:** [https://rubygems.org/gems/jekyll-meta](https://rubygems.org/gems/jekyll-meta)

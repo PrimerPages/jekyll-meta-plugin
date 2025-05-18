@@ -1,7 +1,7 @@
 # jekyll-meta
 
 [![RubyGem Version](https://badge.fury.io/rb/jekyll-meta.svg)](https://badge.fury.io/rb/jekyll-meta)
-[![Build Status](https://github.com/PrimerPages/jekyll-meta/actions/workflows/ci.yml/badge.svg)](https://github.com/PrimerPages/jekyll-meta/actions)
+[![Build status](https://github.com/PrimerPages/jekyll-meta-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/PrimerPages/jekyll-meta-plugin/actions/workflows/test.yml)
 
 A lightweight Jekyll plugin that injects useful build-time metadata (Jekyll version, environment, Ruby version, etc.) into Liquid templates.
 

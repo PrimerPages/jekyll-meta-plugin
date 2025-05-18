@@ -93,7 +93,7 @@ upload_gem() {
 
 # === Main ===
 
-dry_run=true #TODO: SET TO FALSE AFTER TESTING
+dry_run=false
 
 if [[ "$#" -eq 1 ]]; then
   if [[ "$1" == "--dry-run" ]]; then

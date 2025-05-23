@@ -3,6 +3,9 @@ name: Release gem
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 jobs:
@@ -12,21 +15,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set DRY_RUN for manual trigger
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "DRY_RUN=true" >> $GITHUB_ENV
+            echo "Manual run detected — forcing dry run mode."
+          fi
+
       - name: Get Version from File
-        id: version
+        id: from_file
         run: |
           version=$(.github/scripts/get_version.sh)
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "Found release version: $version"
 
+      - name: Get version from tag
+        id: from_tag
+        env:
+          DRY_RUN: ${{ env.DRY_RUN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          PUSH_TAG_REF: ${{ github.ref }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "version=${{ steps.from_file.outputs.version }}" >> $GITHUB_OUTPUT
+            echo "Manual trigger — using version from file."
+          elif [ -n "$RELEASE_TAG" ]; then
+            echo "version=$RELEASE_TAG" >> $GITHUB_OUTPUT
+            echo "Using version from release tag: $RELEASE_TAG"
+          else
+            TAG_NAME=$(basename "$PUSH_TAG_REF")
+            echo "version=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "Using version from push tag: $TAG_NAME"
+          fi
+
       - name: Check release and draft release versions match
         run: |
-          version="${{ steps.version.outputs.version }}"
-          release_tag="${{ github.event.release.tag_name }}"
-          echo "GitHub tag: $release_tag"
-          echo "Expected version: $version"
+          file_version="${{ steps.from_file.outputs.version }}"
+          tag_version="${{ steps.from_tag.outputs.version}}"
+          echo "GitHub tag: $tag_version"
+          echo "Expected version from file: $file_version"
 
-          if [ "$version" = "$release_tag" ]; then
+          if [ "$file_version" = "$tag_version" ]; then
             echo "Release tag and version match"
           else
             echo "Release tag and version do not match"
@@ -35,11 +64,11 @@ jobs:
           
       - name: Release summary
         run: |
-          tag="${{ github.event.release.tag_name }}"
+          tag="${{ steps.from_tag.outputs.version}}"
           {
             echo "### Release: \`$tag\`"
             echo ""
-            echo "${{ github.event.release.body }}"
+            echo "${{ github.event.release.body || 'No release notes for manual run.' }}"
           } >> $GITHUB_STEP_SUMMARY
 
       - name: Do release

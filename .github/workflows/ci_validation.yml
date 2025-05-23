@@ -9,7 +9,7 @@ on:
 
 jobs:
   ci-script-tests:
-    name: Run ci script tests
+    name: Test ci scripts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -34,7 +34,7 @@ load_env_file() {
 
 # Extract the gem name from the gemspec
 get_gem_name() {
-  ruby -e 'spec = eval(File.read(ARGV[0])); puts spec.name' "$1"
+  ruby -e 'puts Gem::Specification.load(ARGV[0]).name' "$1"
 }
 
 # Ensure RUBYGEMS_API_KEY is set

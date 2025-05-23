@@ -3,9 +3,6 @@ name: Release gem
 on:
   release:
     types: [published]
-  push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 jobs:
@@ -34,18 +31,13 @@ jobs:
         env:
           DRY_RUN: ${{ env.DRY_RUN }}
           RELEASE_TAG: ${{ github.event.release.tag_name }}
-          PUSH_TAG_REF: ${{ github.ref }}
         run: |
           if [ "$DRY_RUN" = "true" ]; then
             echo "version=${{ steps.from_file.outputs.version }}" >> $GITHUB_OUTPUT
             echo "Manual trigger — using version from file."
-          elif [ -n "$RELEASE_TAG" ]; then
+          else
             echo "version=$RELEASE_TAG" >> $GITHUB_OUTPUT
             echo "Using version from release tag: $RELEASE_TAG"
-          else
-            TAG_NAME=$(basename "$PUSH_TAG_REF")
-            echo "version=$TAG_NAME" >> $GITHUB_OUTPUT
-            echo "Using version from push tag: $TAG_NAME"
           fi
 
       - name: Check release and draft release versions match

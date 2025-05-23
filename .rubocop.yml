@@ -3,3 +3,17 @@ plugins: rubocop-rspec
 
 AllCops:
   NewCops: enable
+  Include:
+    - 'lib/**/*'
+    - 'spec/**/*'
+  Exclude:
+    - 'vendor/**/*'
+    - 'integration/**/vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'pkg/**/*'
+    - 'spec/fixtures/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/jekyll-meta.rb'

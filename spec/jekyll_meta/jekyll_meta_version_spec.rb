@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative '../../lib/jekyll_meta'
+require_relative '../../lib/jekyll_meta/version'
 
 RSpec.describe JekyllMeta do
   it 'has a VERSION constant' do

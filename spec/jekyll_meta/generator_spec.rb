@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'jekyll'
-require_relative '../../lib/jekyll_meta'
+require_relative '../../lib/jekyll_meta/generator'
 
 RSpec.shared_context 'when a jekyll site is set up' do
   let(:source_dir) { File.expand_path('../fixtures', __dir__) }

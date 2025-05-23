@@ -1,0 +1,8 @@
+title: JekyllMeta Test Site
+
+plugins:
+  - jekyll-meta
+
+exclude:
+  - vendor
+  - lib

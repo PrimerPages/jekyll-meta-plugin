@@ -3,6 +3,10 @@
 assert_success() {
   if [[ "$status" -ne 0 ]]; then
     echo "Expected success (exit code 0), got $status"
+    echo "=== Command Output ==="
+    echo "$output"
+    echo "======================"
+    [[ -n "$1" ]] && echo "$1"
     return 1
   fi
 }
@@ -10,6 +14,10 @@ assert_success() {
 assert_failure() {
   if [[ "$status" -eq 0 ]]; then
     echo "Expected failure (non-zero exit), but got 0"
+    echo "=== Command Output ==="
+    echo "$output"
+    echo "======================"
+    [[ -n "$1" ]] && echo "$1"
     return 1
   fi
 }

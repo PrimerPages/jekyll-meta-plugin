@@ -42,6 +42,20 @@
             "problemMatcher": []
         },
         {
+            "label": "integration",
+            "type": "shell",
+            "command": "bats integration",
+            "options": {
+                "env": {
+                    "JEKYLL_VERSION": "4.4.1"
+                }
+            },
+            "group": {
+                "kind": "test"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "release (dry-run)",
             "type": "shell",
             "command": ".github/scripts/release.sh",

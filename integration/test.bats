@@ -10,7 +10,7 @@ run_test_for_site() {
   pushd "$site" >/dev/null
 
   run bundle install
-  assert_success "Cound not install bundle"
+  assert_success "Could not install bundle"
 
   run bundle exec jekyll build
   assert_success "Could not build Jekyll site"
@@ -26,6 +26,6 @@ run_test_for_site() {
   run_test_for_site "$BATS_TEST_DIRNAME/github-pages" "3.10.0"
 }
 
-@test "jekyll-4.4 builds and outputs metadata" {
-  run_test_for_site "$BATS_TEST_DIRNAME/jekyll-4.4" "4.4.1"
+@test "jekyll-version builds and outputs $JEKYLL_VERSION" {
+  run_test_for_site "$BATS_TEST_DIRNAME/jekyll-version" "$JEKYLL_VERSION"
 }

@@ -60,7 +60,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby: [3.3.4, 3.4]
-    name: Integration tests ${{ matrix.ruby }} 
+        jekyll: [3.10.0, 4.3.4, 4.4.0, 4.4.1]
+    name: Integration tests Ruby ${{ matrix.ruby }} / Jekyll ${{ matrix.jekyll }}
 
     steps:
       - name: Checkout code
@@ -78,6 +79,8 @@ jobs:
       
       - name: Run tests
         run: bats integration
+        env:
+          JEKYLL_VERSION: ${{ matrix.jekyll }}
 
   required-tests:
     name: Check required tests passed

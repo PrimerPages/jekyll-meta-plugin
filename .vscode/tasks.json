@@ -45,6 +45,11 @@
             "label": "integration",
             "type": "shell",
             "command": "bats integration",
+            "options": {
+                "env": {
+                    "JEKYLL_VERSION": "4.4.1"
+                }
+            },
             "group": {
                 "kind": "test"
             },

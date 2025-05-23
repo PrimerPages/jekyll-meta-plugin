@@ -105,7 +105,7 @@ elif [[ "$#" -gt 1 ]]; then
 fi
 
 # Check for DRY_RUN in environment (only if not already set by CLI)
-if [[ "$dry_run" == "false" && "$DRY_RUN" == "true" ]]; then
+if [[ "$dry_run" == "false" && "${DRY_RUN:-}" == "true" ]]; then
   dry_run=true
 fi
 

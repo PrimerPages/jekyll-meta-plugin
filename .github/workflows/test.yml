@@ -54,10 +54,35 @@ jobs:
         if: failure()
         run: bundle list
 
+  integration:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [3.3.4, 3.4]
+    name: Integration tests ${{ matrix.ruby }} 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install Bats
+        run: |
+          git clone https://github.com/bats-core/bats-core.git
+          sudo ./bats-core/install.sh /usr/local
+      
+      - name: Run tests
+        run: bats integration
+
   required-tests:
     name: Check required tests passed
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [lint, test, integration]
     if: ${{ success() }}  # Only runs if all `needs` succeeded
     
     steps:

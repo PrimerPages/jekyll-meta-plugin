@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-# Load assertion helpers (no external deps)
+# Load assertion helpers
 load 'bats_helper.sh'
 
 setup() {

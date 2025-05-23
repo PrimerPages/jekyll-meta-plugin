@@ -42,6 +42,15 @@
             "problemMatcher": []
         },
         {
+            "label": "integration",
+            "type": "shell",
+            "command": "bats integration",
+            "group": {
+                "kind": "test"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "release (dry-run)",
             "type": "shell",
             "command": ".github/scripts/release.sh",

@@ -31,6 +31,9 @@ assert_output() {
     if [[ "$output" != "$expected" ]]; then
       echo "Expected output: $expected"
       echo "Actual output: $output"
+      echo "=== Command Output ==="
+      echo "$output"
+      echo "======================"
       return 1
     fi
   fi
@@ -41,6 +44,9 @@ assert_output_contains() {
   if [[ "$output" != *"$expected"* ]]; then
     echo "Expected output to contain: $expected"
     echo "Actual output: $output"
+    echo "=== Command Output ==="
+    echo "$output"
+    echo "======================"
     return 1
   fi
 }

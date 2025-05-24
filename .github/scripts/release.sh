@@ -76,14 +76,9 @@ build_gem() {
 # Upload the gem to RubyGems unless it's a dry run
 upload_gem() {
   local gem_file="$1"
-  local gem_name
 
-  gem_name=$(get_gem_name "$gem_file")
-
-  echo "Released $gem_file to $RUBYGEMS_HOST/gems/$gem_name"
   echo "Publishing $gem_file to RubyGems..."
   gem push "$gem_file" --host "$RUBYGEMS_HOST"
-  echo "Released $gem_file to $RUBYGEMS_HOST/gems/$gem_name"
 }
 
 # === Main ===
@@ -109,8 +104,6 @@ if [[ "$dry_run" == "false" && "${DRY_RUN:-}" == "true" ]]; then
   dry_run=true
 fi
 
-echo "Starting release for $GEMSPEC_FILE"
-
 load_env_file
 if [[ "$dry_run" == true ]]; then
   echo "[DRY RUN] Skipping credential setup"
@@ -119,11 +112,15 @@ else
 fi
 
 detect_gemspec_file
+gem_name=$(get_gem_name $GEMSPEC_FILE)
+echo "Starting release for $gem_name found in $GEMSPEC_FILE"
+
 gem_file=$(build_gem "$GEMSPEC_FILE")
 echo "Generated gem file: $gem_file"
 
 if [[ "$dry_run" == true ]]; then
-  echo "[DRY RUN] Skipping gem push for $gem_file"
+  echo "[DRY RUN] Skipping gem push for $gem_file to $RUBYGEMS_HOST/gems/$gem_name"
 else
   upload_gem "$gem_file" "$dry_run"
+  echo "Released $gem_file to $RUBYGEMS_HOST/gems/$gem_name"
 fi
